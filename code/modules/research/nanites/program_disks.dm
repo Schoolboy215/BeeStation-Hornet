@@ -1,11 +1,16 @@
-//Names are intentionally all the same - track your nanites, or use a hand labeler
-//This also means that you can give flesh melting nanites to your victims if you feel like it
+// Names are no longer blank. Disks get names when ejected from the program hub anyway, so it was unclear how this would have been a factor
+// Now that there is a nanite program supply crate with a random draw, it feels important to have them labeled to prevent inadvertent griefing
 
 /obj/item/disk/nanite_program
 	name = "nanite program disk"
 	desc = "A disk capable of storing nanite programs. Can be customized using a Nanite Programming Console."
 	var/program_type
 	var/datum/nanite_program/program
+
+/obj/item/disk/nanite_program/New()
+	. = ..()
+	if (program_type)
+		name = name = "[initial(name)] \[[program.name]\]"
 
 /obj/item/disk/nanite_program/Initialize(mapload)
 	. = ..()
@@ -115,22 +120,97 @@
 	program_type = /datum/nanite_program/glitch
 
 /obj/item/disk/nanite_program/brain_misfire
-	program_type = /datum/nanite_program/pacifying
+	program_type = /datum/nanite_program/brain_misfire
 
 /obj/item/disk/nanite_program/skin_decay
-	program_type = /datum/nanite_program/pacifying
+	program_type = /datum/nanite_program/skin_decay
 
 /obj/item/disk/nanite_program/nerve_decay
-	program_type = /datum/nanite_program/pacifying
+	program_type = /datum/nanite_program/nerve_decay
 
 /obj/item/disk/nanite_program/refractive
 	program_type = /datum/nanite_program/refractive
 
 /obj/item/disk/nanite_program/conductive
-	program_type = /datum/nanite_program/pacifying
+	program_type = /datum/nanite_program/conductive
 
 /obj/item/disk/nanite_program/stun
 	program_type = /datum/nanite_program/stun
 
 /obj/item/disk/nanite_program/species_sensor
 	program_type = /datum/nanite_program/sensor/species
+
+/obj/item/disk/nanite_program/flesh_eating
+	program_type = /datum/nanite_program/flesh_eating
+
+/obj/item/disk/nanite_program/poison
+	program_type = /datum/nanite_program/poison
+
+/obj/item/disk/nanite_program/sensor_crit
+	program_type = /datum/nanite_program/sensor/crit
+
+/obj/item/disk/nanite_program/sensor_damage
+	program_type = /datum/nanite_program/sensor/damage
+
+/obj/item/disk/nanite_program/sensor_death
+	program_type = /datum/nanite_program/sensor/death
+
+/obj/item/disk/nanite_program/sensor_health
+	program_type = /datum/nanite_program/sensor/health
+
+/obj/item/disk/nanite_program/sensor_nutrition
+	program_type = /datum/nanite_program/sensor/nutrition
+
+/obj/item/disk/nanite_program/sensor_blood
+	program_type = /datum/nanite_program/sensor/blood
+
+/obj/item/disk/nanite_program/bad_mood
+	program_type = /datum/nanite_program/bad_mood
+
+/obj/item/disk/nanite_program/good_mood
+	program_type = /datum/nanite_program/good_mood
+
+/obj/item/disk/nanite_program/self_scan
+	program_type = /datum/nanite_program/self_scan
+
+/obj/item/disk/nanite_program/blinding
+	program_type = /datum/nanite_program/blinding
+
+/obj/item/disk/nanite_program/hallucination
+	program_type = /datum/nanite_program/comm/hallucination
+
+/obj/item/disk/nanite_program/mute
+	program_type = /datum/nanite_program/mute
+
+/obj/item/disk/nanite_program/speech
+	program_type = /datum/nanite_program/comm/speech
+
+/obj/item/disk/nanite_program/adrenaline
+	program_type = /datum/nanite_program/adrenaline
+
+/obj/item/disk/nanite_program/defib
+	program_type = /datum/nanite_program/defib
+
+/obj/item/disk/nanite_program/sensor_species
+	program_type = /datum/nanite_program/sensor/species
+
+/obj/item/disk/nanite_program/vampire
+	program_type = /datum/nanite_program/vampire
+
+/obj/item/disk/nanite_program/factory
+	program_type = /datum/nanite_program/protocol/factory
+
+/obj/item/disk/nanite_program/kickstart
+	program_type = /datum/nanite_program/protocol/kickstart
+
+/obj/item/disk/nanite_program/offline
+	program_type = /datum/nanite_program/protocol/offline
+
+/obj/item/disk/nanite_program/pyramid
+	program_type = /datum/nanite_program/protocol/pyramid
+
+/obj/item/disk/nanite_program/free_range
+	program_type = /datum/nanite_program/protocol/free_range
+
+/obj/item/disk/nanite_program/zip
+	program_type = /datum/nanite_program/protocol/zip

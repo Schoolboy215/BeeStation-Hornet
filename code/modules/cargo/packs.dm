@@ -20,6 +20,7 @@
 	var/admin_spawned = FALSE
 	var/small_item = FALSE //Small items can be grouped into a single crate.
 	var/can_secure = TRUE //Can this order be secured
+	var/random_count = 0 // If set to non-zero, this many items will be randomly selected from the contains list
 
 /datum/supply_pack/New()
 	. = ..()
@@ -50,17 +51,33 @@
 		. *= 0.8
 
 /datum/supply_pack/proc/fill(obj/structure/closet/crate/C)
-	if (admin_spawned)
-		for(var/item in contains)
-			var/atom/A = new item(C)
-			A.flags_1 |= ADMIN_SPAWNED_1
+	if (random_count != 0 && random_count < contains.len)
+		var/i
+		var/list/contents_copy = contains.Copy() // Use a copy of the list because we're removing elements
+		for(i=0, i<random_count, i++)
+			var/random_index = rand(1,contents_copy.len)
+			var/item = contents_copy[random_index]
+			if (admin_spawned)
+				var/atom/A = new item(C)
+				A.flags_1 |= ADMIN_SPAWNED_1
+			else
+				if(ispath(item))
+					new item(C)
+				else if(ismovable(item))
+					var/atom/movable/MA = item
+					MA.forceMove(C)
+			contents_copy.Remove(item)
 	else
 		for(var/item in contains)
-			if(ispath(item))
-				new item(C)
-			else if(ismovable(item))
-				var/atom/movable/MA = item
-				MA.forceMove(C)
+			if (admin_spawned)
+				var/atom/A = new item(C)
+				A.flags_1 |= ADMIN_SPAWNED_1
+			else
+				if(ispath(item))
+					new item(C)
+				else if(ismovable(item))
+					var/atom/movable/MA = item
+					MA.forceMove(C)
 
 // If you add something to this list, please group it by type and sort it alphabetically instead of just jamming it in like an animal
 
@@ -2055,6 +2072,66 @@
 	access_budget = FALSE
 	contains = list(/obj/item/storage/part_replacer/cargo)
 	crate_name = "\improper RPED crate"
+
+/datum/supply_pack/science/nanites	// Don't worry, they only get 6 random disks from this list
+	name = "Nanite program crate"
+	desc = "An assortment of high tier nanite program disks"
+	cost = 850
+	max_supply = 3
+	contains = list(
+		// Biological Nanite Programming - Tier 3
+		/obj/item/disk/nanite_program/blood_restoring,
+		/obj/item/disk/nanite_program/coagulating,
+		/obj/item/disk/nanite_program/flesh_eating,
+		/obj/item/disk/nanite_program/poison,
+		/obj/item/disk/nanite_program/regenerative,
+		/obj/item/disk/nanite_program/sensor_crit,
+		/obj/item/disk/nanite_program/sensor_damage,
+		/obj/item/disk/nanite_program/sensor_death,
+		/obj/item/disk/nanite_program/sensor_health,
+		/obj/item/disk/nanite_program/sensor_nutrition,
+		/obj/item/disk/nanite_program/sensor_blood,
+
+		// Neural Nanite Programming - Tier 3
+		/obj/item/disk/nanite_program/bad_mood,
+		/obj/item/disk/nanite_program/brain_heal,
+		/obj/item/disk/nanite_program/good_mood,
+		/obj/item/disk/nanite_program/nervous,
+		/obj/item/disk/nanite_program/paralyzing,
+		/obj/item/disk/nanite_program/self_scan,
+		/obj/item/disk/nanite_program/stun,
+
+		// Synaptic Nanite Programming - Tier 4
+		/obj/item/disk/nanite_program/blinding,
+		/obj/item/disk/nanite_program/hallucination,
+		/obj/item/disk/nanite_program/mute,
+		/obj/item/disk/nanite_program/pacifying,
+		/obj/item/disk/nanite_program/sleepy,
+		/obj/item/disk/nanite_program/speech,
+
+		// Harmonic Nanite Programming - Tier 4
+		/obj/item/disk/nanite_program/adrenaline,
+		/obj/item/disk/nanite_program/aggressive_replication,
+		/obj/item/disk/nanite_program/brain_heal_advanced,
+		/obj/item/disk/nanite_program/defib,
+		/obj/item/disk/nanite_program/fake_death,
+		/obj/item/disk/nanite_program/purging_advanced,
+		/obj/item/disk/nanite_program/regenerative_advanced,
+		/obj/item/disk/nanite_program/sensor_species,
+		/obj/item/disk/nanite_program/vampire,
+
+		// Nanite Replication Protocols - Tier 4
+		/obj/item/disk/nanite_program/factory,
+		/obj/item/disk/nanite_program/kickstart,
+		/obj/item/disk/nanite_program/offline,
+		/obj/item/disk/nanite_program/pyramid,
+
+		// Nanite Storage Protocols - Tier 4
+		/obj/item/disk/nanite_program/free_range,
+		/obj/item/disk/nanite_program/zip
+	)
+	crate_name = "nanite program crate"
+	random_count = 6
 
 /datum/supply_pack/science/shieldwalls
 	name = "Shield Generator Crate"
